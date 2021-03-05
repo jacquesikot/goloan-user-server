@@ -20,15 +20,21 @@ export default (app: Router) => {
                     .send(error.invalidRequest(validation.error.details));
 
             const existingUser = await checkIfUserExists(req.body);
-            if (!existingUser)
+            if (existingUser)
                 return res
                     .status(400)
-                    .send(`User with ${req.body.email} is already registered`);
+                    .send(
+                        error.generic(
+                            `User with ${req.body.email} is already registered`,
+                            400,
+                        ),
+                    );
 
             const user = await createUser(req.body);
             res.send(
                 response.single(
                     _.pick(user, [
+                        'id',
                         'first_name',
                         'last_name',
                         'gender',

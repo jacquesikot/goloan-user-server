@@ -6,6 +6,14 @@ const invalidRequest = (error: any) => {
     };
 };
 
+const generic = (message: string, code: number) => {
+    return {
+        message,
+        code,
+    };
+};
+
 export default {
     invalidRequest,
+    generic,
 };

@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-
 import { IUser } from '../interfaces';
 import logger from '../utils/logger';
-
-const prisma = new PrismaClient();
+import prisma from '../prismaClient';
 
 export const createUser = async (user: IUser) => {
     const {
@@ -26,7 +23,7 @@ export const createUser = async (user: IUser) => {
                 gender,
                 bvn,
                 user_type,
-                created_at: Date.now().toString(),
+                created_at: new Date().toISOString(),
             },
         });
 
