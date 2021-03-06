@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch --verbose --silent",
+    "test": "jest --watchAll --verbose --silent",
     "dev": "nodemon",
     "start": "pm2 start nodemon -i max",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"

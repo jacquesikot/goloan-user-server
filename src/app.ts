@@ -3,9 +3,9 @@ import express from 'express';
 import config from './config';
 import logger from './utils/logger';
 
-const app = express();
-
 const startServer = async () => {
+    const app = express();
+
     await require('./loaders').default({ expressApp: app });
 
     app.listen(config.port, () => {
@@ -21,5 +21,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-export default app;

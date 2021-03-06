@@ -77,3 +77,4 @@
 {"code":"EADDRINUSE","errno":"EADDRINUSE","syscall":"listen","address":"::","port":3000,"level":"error"}
 {"code":"EADDRINUSE","errno":"EADDRINUSE","syscall":"listen","address":"::","port":3000,"level":"error"}
 {"code":"EADDRINUSE","errno":"EADDRINUSE","syscall":"listen","address":"::","port":3000,"level":"error"}
+{"code":"EADDRINUSE","errno":"EADDRINUSE","syscall":"listen","address":"::","port":3000,"level":"error"}
