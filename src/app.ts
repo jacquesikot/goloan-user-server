@@ -1,7 +1,9 @@
+import 'reflect-metadata';
+
 import express from 'express';
 
 import config from './config';
-import logger from './utils/logger';
+import logger from './loaders/logger';
 
 const startServer = async () => {
     const app = express();

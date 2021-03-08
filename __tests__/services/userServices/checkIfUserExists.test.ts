@@ -1,4 +1,4 @@
-import prisma from '../../../src/prismaClient';
+import { prisma } from '../../../src/loaders/prisma';
 import { IUser } from '../../../src/interfaces';
 import { checkIfUserExists, createUser } from '../../../src/services';
 
@@ -13,6 +13,8 @@ describe('check if user exists', () => {
         last_name: 'ikot',
         phone_number: '23409059032943',
         email: 'jimmy@gmail.com',
+        password: '123456',
+        pin: '1234',
         gender: 'male',
         bvn: '1234567890',
         user_type: '1',

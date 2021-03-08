@@ -1,10 +1,14 @@
 import expressLoader from './express';
-import postgresLoader from './postgres';
-import logger from '../utils/logger';
+import prismaLoader from './prisma';
+import logger from './logger';
+// import dependencyInjectorLoader from './dependencyInjector';
 
 export default async ({ expressApp }: any) => {
-    await postgresLoader();
-    logger.info('✌️ Postgres loaded and connected!');
+    await prismaLoader();
+    logger.info('✌️ Prisma loaded and connected!');
+
+    // await dependencyInjectorLoader();
+    // logger.info('✌️ Dependency Injector loaded');
 
     await expressLoader({ app: expressApp });
     logger.info('✌️ Express loaded');

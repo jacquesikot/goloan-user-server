@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 
-import prisma from '../../../src/prismaClient';
+import { prisma } from '../../../src/loaders/prisma';
 import config from '../../../src/config';
 import { createUser } from '../../../src/services';
 import { IUser } from '../../../src/interfaces';
@@ -24,6 +24,8 @@ describe('/v1/users - POST', () => {
         last_name: 'ikot',
         phone_number: '23409059032943',
         email: 'jimmy@gmail.com',
+        password: '123456',
+        pin: '1234',
         gender: 'male',
         bvn: '1234567890',
         user_type: '1',

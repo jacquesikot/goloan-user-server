@@ -45,6 +45,10 @@ model users {
   user_type    String         @db.VarChar(50)
   created_at   String         @db.VarChar(50)
   updated_at   String?        @db.VarChar(50)
+  password     String         @db.VarChar(1050)
+  pin          String         @db.VarChar(1050)
+  last_login   String?        @db.VarChar(50)
+  modified     String?        @db.VarChar(500)
   user_account user_account[]
   user_card    user_card[]
 }

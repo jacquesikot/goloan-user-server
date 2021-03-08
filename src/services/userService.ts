@@ -1,8 +1,35 @@
-import { IUser } from '../interfaces';
-import logger from '../utils/logger';
-import prisma from '../prismaClient';
+import bcrypt from 'bcrypt';
 
-export const createUser = async (user: IUser) => {
+import { IUser } from '../interfaces';
+import logger from '../loaders/logger';
+import { prisma, Prisma, users } from '../loaders/prisma';
+
+export const hashValue = async (value: string): Promise<string | undefined> => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedValue = await bcrypt.hash(value, salt);
+        return hashedValue;
+    } catch (error) {
+        logger.error(error);
+    }
+};
+
+export const validatePassword = async (
+    givenPassword: string,
+    userPassword: string,
+): Promise<boolean | undefined> => {
+    try {
+        const validPassword = await bcrypt.compare(givenPassword, userPassword);
+        if (!validPassword) return false;
+        return true;
+    } catch (error) {
+        logger.error(error);
+    }
+};
+
+export const createUser = async (
+    user: IUser,
+): Promise<Prisma.Prisma__usersClient<users> | undefined> => {
     const {
         first_name,
         last_name,
@@ -11,7 +38,12 @@ export const createUser = async (user: IUser) => {
         gender,
         bvn,
         user_type,
+        password,
+        pin,
     } = user;
+
+    const safePassword = (await hashValue(password))!.toString();
+    const safePin = (await hashValue(pin))!.toString();
 
     try {
         const user = prisma.users.create({
@@ -20,6 +52,8 @@ export const createUser = async (user: IUser) => {
                 last_name,
                 phone_number,
                 email,
+                password: safePassword,
+                pin: safePin,
                 gender,
                 bvn,
                 user_type,
@@ -33,7 +67,9 @@ export const createUser = async (user: IUser) => {
     }
 };
 
-export const checkIfUserExists = async (user: IUser) => {
+export const checkIfUserExists = async (
+    user: IUser,
+): Promise<boolean | undefined> => {
     try {
         const { email } = user;
 

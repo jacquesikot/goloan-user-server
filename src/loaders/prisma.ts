@@ -1,5 +1,13 @@
-import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import {
+    PrismaClient,
+    Prisma,
+    users,
+    user_account,
+    user_card,
+} from '@prisma/client';
+
+import logger from './logger';
+
 const prisma = new PrismaClient();
 
 export default async () => {
@@ -10,3 +18,5 @@ export default async () => {
         logger.error('Postgres loading Error');
     }
 };
+
+export { prisma, Prisma, users, user_account, user_card };

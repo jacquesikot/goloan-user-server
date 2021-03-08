@@ -9,4 +9,6 @@ if (envFound.error) {
 
 export default {
     port: parseInt(process.env.PORT!, 10),
+    email: 'jacquesikot@gmail.com',
+    email_password: process.env.EMAIL_PASSWORD,
 };
