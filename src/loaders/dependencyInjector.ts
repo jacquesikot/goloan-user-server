@@ -1,17 +1,20 @@
-import { Container } from 'typedi';
 import LoggerInstance from './logger';
 import { PrismaClient } from '@prisma/client';
+import { userService, accountService } from '../services';
 
-export default () => {
-    try {
-        const PrismaInstance = new PrismaClient();
+const PrismaInstance = new PrismaClient();
+const userEventInstance = new (require('events').EventEmitter)();
+const userServiceInstance = userService(
+    LoggerInstance,
+    PrismaInstance,
+    userEventInstance,
+);
+const accountServiceInstance = accountService(LoggerInstance, PrismaInstance);
 
-        Container.set('logger', LoggerInstance);
-        Container.set('prisma', PrismaInstance);
-    } catch (error) {
-        LoggerInstance.error(
-            '🔥 Error on dependency injector loader: %o',
-            error,
-        );
-    }
+export {
+    PrismaInstance as prisma,
+    userServiceInstance as userService,
+    LoggerInstance as logger,
+    userEventInstance as userEvent,
+    accountServiceInstance as accountService,
 };

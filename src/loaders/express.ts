@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import routes from '../api';
-import logger from '../utils/logger';
+import logger from './logger';
 
 export default ({ app }: { app: express.Application }) => {
     // Health Check endpoints

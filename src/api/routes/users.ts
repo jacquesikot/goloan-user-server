@@ -1,10 +1,9 @@
 import { Router, Request, Response } from 'express';
 import * as _ from 'lodash';
 
-import logger from '../../utils/logger';
 import { userValidation } from '../../validation';
-import { createUser, checkIfUserExists } from '../../services';
 import { response, error } from '../../utils';
+import { userService, logger } from '../../loaders/dependencyInjector';
 
 const route = Router();
 
@@ -19,7 +18,7 @@ export default (app: Router) => {
                     .status(400)
                     .send(error.invalidRequest(validation.error.details));
 
-            const existingUser = await checkIfUserExists(req.body);
+            const existingUser = await userService.checkIfUserExists(req.body);
             if (existingUser)
                 return res
                     .status(400)
@@ -30,7 +29,7 @@ export default (app: Router) => {
                         ),
                     );
 
-            const user = await createUser(req.body);
+            const user = await userService.createUser(req.body);
             res.send(
                 response.single(
                     _.pick(user, [

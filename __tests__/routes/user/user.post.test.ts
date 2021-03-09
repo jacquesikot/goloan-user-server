@@ -1,9 +1,8 @@
 import request from 'supertest';
 import express from 'express';
 
-import { prisma } from '../../../src/loaders/prisma';
 import config from '../../../src/config';
-import { createUser } from '../../../src/services';
+import { userService, prisma } from '../../../src/loaders/dependencyInjector';
 import { IUser } from '../../../src/interfaces';
 
 let server: any;
@@ -43,7 +42,7 @@ describe('/v1/users - POST', () => {
     });
 
     test('should return 400 if user exists', async () => {
-        await createUser(data);
+        await userService.createUser(data);
 
         const res = await request(server).post('/v1/users').send(data);
 

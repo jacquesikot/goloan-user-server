@@ -1,8 +1,8 @@
 import { prisma } from '../../../src/loaders/prisma';
 import { IUser } from '../../../src/interfaces';
-import { createUser } from '../../../src/services';
+import { userService } from '../../../src/loaders/dependencyInjector';
 
-describe('create new user', () => {
+describe('userService.createUser', () => {
     afterEach(async () => {
         await prisma.users.deleteMany({});
         await prisma.$disconnect();
@@ -20,7 +20,7 @@ describe('create new user', () => {
             bvn: '1234567890',
             user_type: '1',
         };
-        const user = await createUser(data);
+        const user = await userService.createUser(data);
 
         expect(user).toHaveProperty('first_name', data.first_name);
         expect(user).toHaveProperty('last_name', data.last_name);

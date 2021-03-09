@@ -1,8 +1,8 @@
 import { prisma } from '../../../src/loaders/prisma';
 import { IUser } from '../../../src/interfaces';
-import { checkIfUserExists, createUser } from '../../../src/services';
+import { userService } from '../../../src/loaders/dependencyInjector';
 
-describe('check if user exists', () => {
+describe('userService.checkIfUserExists', () => {
     afterEach(async () => {
         await prisma.users.deleteMany({});
         await prisma.$disconnect();
@@ -21,15 +21,15 @@ describe('check if user exists', () => {
     };
 
     test('should return true if user exists', async () => {
-        await createUser(data);
+        await userService.createUser(data);
 
-        const existingUser = await checkIfUserExists(data);
+        const existingUser = await userService.checkIfUserExists(data);
 
         expect(existingUser).toBe(true);
     });
 
     test('should return false if user doesnt exists', async () => {
-        const existingUser = await checkIfUserExists(data);
+        const existingUser = await userService.checkIfUserExists(data);
 
         expect(existingUser).toBe(false);
     });
