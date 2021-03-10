@@ -19,4 +19,4 @@ export default async () => {
     }
 };
 
-export { prisma, Prisma, users, user_account, user_card };
+export { prisma, Prisma, users, user_account, user_card, PrismaClient };

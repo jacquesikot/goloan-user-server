@@ -73,15 +73,11 @@ const userService = (logger: any, prisma: any, userEvent: any) => {
         }
     };
 
-    const checkIfUserExists = async (
-        user: IUser,
-    ): Promise<boolean | undefined> => {
+    const checkIfUserExists = async (user_email: string) => {
         try {
-            const { email } = user;
-
             const foundUser = await prisma.users.findUnique({
                 where: {
-                    email,
+                    email: user_email,
                 },
             });
 

@@ -1,6 +1,6 @@
 import LoggerInstance from './logger';
 import { PrismaClient } from '@prisma/client';
-import { userService, accountService } from '../services';
+import { userService, accountService, cardService } from '../services';
 
 const PrismaInstance = new PrismaClient();
 const userEventInstance = new (require('events').EventEmitter)();
@@ -10,6 +10,7 @@ const userServiceInstance = userService(
     userEventInstance,
 );
 const accountServiceInstance = accountService(LoggerInstance, PrismaInstance);
+const cardServiceInstance = cardService(LoggerInstance, PrismaInstance);
 
 export {
     PrismaInstance as prisma,
@@ -17,4 +18,5 @@ export {
     LoggerInstance as logger,
     userEventInstance as userEvent,
     accountServiceInstance as accountService,
+    cardServiceInstance as cardService,
 };

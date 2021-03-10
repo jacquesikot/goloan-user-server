@@ -1,10 +1,12 @@
 import { Router, Request, Response } from 'express';
+
+import endpoints from '../endpoints';
 const route = Router();
 
 export default (app: Router) => {
-    app.use('/', route);
+    app.use(endpoints.home, route);
 
     route.get('/', (_req: Request, res: Response) => {
-        res.send('Home').status(200);
+        res.status(200).send('Home');
     });
 };

@@ -2,19 +2,21 @@ import request from 'supertest';
 import express from 'express';
 
 import config from '../../../src/config';
-import { userService, prisma } from '../../../src/loaders/dependencyInjector';
+import { userService } from '../../../src/loaders/dependencyInjector';
 import { IUser } from '../../../src/interfaces';
+import endpoints from '../../../src/api/endpoints';
+import testHelpers from '../../../src/testHelpers';
 
 let server: any;
 
-describe('/v1/users - POST', () => {
+describe(`${endpoints.user} - POST`, () => {
     beforeEach(async () => {
         const app = express();
         await require('../../../src/loaders').default({ expressApp: app });
         server = app.listen(config.port);
     });
     afterEach(async () => {
-        await prisma.users.deleteMany({});
+        await testHelpers.cleanDatabase();
         await server.close();
     });
 
@@ -36,7 +38,7 @@ describe('/v1/users - POST', () => {
             last_name: 'jimmy',
         };
 
-        const res = await request(server).post('/v1/users').send(data);
+        const res = await request(server).post(endpoints.user).send(data);
 
         expect(res.status).toBe(400);
     });
@@ -44,7 +46,7 @@ describe('/v1/users - POST', () => {
     test('should return 400 if user exists', async () => {
         await userService.createUser(data);
 
-        const res = await request(server).post('/v1/users').send(data);
+        const res = await request(server).post(endpoints.user).send(data);
 
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({
@@ -53,10 +55,10 @@ describe('/v1/users - POST', () => {
         });
     });
 
-    test('should create new user and return user', async () => {
-        const res = await request(server).post('/v1/users').send(data);
+    test('should create new user and status 201 and created user', async () => {
+        const res = await request(server).post(endpoints.user).send(data);
 
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(201);
         expect(res.body.data).toHaveProperty('id');
         expect(res.body.data).toHaveProperty('first_name', data.first_name);
     });

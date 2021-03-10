@@ -1,11 +1,10 @@
-import { prisma } from '../../../src/loaders/prisma';
 import { IUser } from '../../../src/interfaces';
 import { userService } from '../../../src/loaders/dependencyInjector';
+import testHelpers from '../../../src/testHelpers';
 
 describe('userService.createUser', () => {
     afterEach(async () => {
-        await prisma.users.deleteMany({});
-        await prisma.$disconnect();
+        await testHelpers.cleanDatabase();
     });
 
     test('should create a new user and return the user', async () => {

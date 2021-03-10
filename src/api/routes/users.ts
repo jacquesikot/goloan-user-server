@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import * as _ from 'lodash';
+import endpoints from '../endpoints';
 
 import { userValidation } from '../../validation';
 import { response, error } from '../../utils';
@@ -8,7 +9,7 @@ import { userService, logger } from '../../loaders/dependencyInjector';
 const route = Router();
 
 export default (app: Router) => {
-    app.use('/v1/users', route);
+    app.use(endpoints.user, route);
 
     route.post('/', async (req: Request, res: Response) => {
         try {
@@ -18,7 +19,9 @@ export default (app: Router) => {
                     .status(400)
                     .send(error.invalidRequest(validation.error.details));
 
-            const existingUser = await userService.checkIfUserExists(req.body);
+            const existingUser = await userService.checkIfUserExists(
+                req.body.email,
+            );
             if (existingUser)
                 return res
                     .status(400)
@@ -29,10 +32,10 @@ export default (app: Router) => {
                         ),
                     );
 
-            const user = await userService.createUser(req.body);
-            res.send(
+            const newUser = await userService.createUser(req.body);
+            res.status(201).send(
                 response.single(
-                    _.pick(user, [
+                    _.pick(newUser, [
                         'id',
                         'first_name',
                         'last_name',
