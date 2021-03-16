@@ -9,9 +9,7 @@ describe('userService.checkIfUserExists', () => {
     test('should return true if user exists', async () => {
         const user = await testHelpers.createTestUser();
 
-        const existingUser = await userService.checkIfUserExists(
-            user.email as string,
-        );
+        const existingUser = await userService.checkIfUserExists(user!.email);
 
         expect(existingUser).toBe(true);
     });

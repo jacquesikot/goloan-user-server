@@ -2,9 +2,14 @@ import bcrypt from 'bcrypt';
 
 import { IUser } from '../interfaces';
 import { Prisma, users } from '../loaders/prisma';
-import { events } from '../subscribers';
+//import { events } from '../subscribers';
 
-const userService = (logger: any, prisma: any, userEvent: any) => {
+const userService = (
+    logger: any,
+    prisma: any,
+    userEvent: any,
+    mailService: any,
+) => {
     const hashValue = async (value: string): Promise<string | undefined> => {
         try {
             const salt = await bcrypt.genSalt(10);
@@ -65,7 +70,7 @@ const userService = (logger: any, prisma: any, userEvent: any) => {
                 },
             });
 
-            userEvent.emit(events.user.signUp);
+            mailService.welcomeMail(user.email);
 
             return user;
         } catch (error) {
@@ -88,11 +93,40 @@ const userService = (logger: any, prisma: any, userEvent: any) => {
         }
     };
 
+    const findUserByEmail = async (user_email: string) => {
+        try {
+            const user = prisma.users.findUnique({
+                where: {
+                    email: user_email,
+                },
+            });
+            return user;
+        } catch (error) {
+            logger.error(error);
+        }
+    };
+
+    const getUserById = async (user_id: string) => {
+        try {
+            const user = prisma.users.findUnique({
+                where: {
+                    id: user_id,
+                },
+            });
+            if (user) return user;
+            return [];
+        } catch (error) {
+            logger.error(error);
+        }
+    };
+
     return {
         hashValue,
         validatePassword,
         createUser,
         checkIfUserExists,
+        findUserByEmail,
+        getUserById,
     };
 };
 

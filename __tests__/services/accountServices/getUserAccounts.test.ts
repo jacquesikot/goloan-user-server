@@ -3,19 +3,15 @@ import testHelpers from '../../../src/testHelpers';
 
 describe('accountService.getUserAccounts', () => {
     afterEach(async () => {
-        testHelpers.cleanDatabase();
+        await testHelpers.cleanDatabase();
     });
 
     test('should return accounts array of users accounts if exists', async () => {
         const user = await testHelpers.createTestUser();
 
-        const newAccounts = await testHelpers.createTwoTestAccounts(
-            user.id as string,
-        );
+        const newAccounts = await testHelpers.createTwoTestAccounts(user!.id);
 
-        const userAccounts = await accountService.getUserAccounts(
-            user.id as string,
-        );
+        const userAccounts = await accountService.getUserAccounts(user!.id);
 
         expect(userAccounts.length).toBe(2);
         expect(userAccounts[0]).toHaveProperty(
@@ -31,7 +27,7 @@ describe('accountService.getUserAccounts', () => {
     test('should return empty array if user doesnt have accounts', async () => {
         const user = await testHelpers.createTestUser();
 
-        const userAccounts = await accountService.getUserAccounts(user.id);
+        const userAccounts = await accountService.getUserAccounts(user!.id);
 
         expect(userAccounts.length).toBe(0);
     });

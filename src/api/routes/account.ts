@@ -5,31 +5,35 @@ import { accountValidation } from '../../validation';
 import { accountService, logger } from '../../loaders/dependencyInjector';
 import { error, response } from '../../utils';
 import endpoints from '../endpoints';
+import { masterAuth } from '../../middlewares';
 
 const route = Router();
 
 export default (app: Router) => {
-    app.use(endpoints.account, route);
+    app.use(endpoints.account, masterAuth, route);
 
     route.post('/', async (req: Request, res: Response) => {
         try {
             const validation = accountValidation(req.body);
-            if (validation.error)
-                return res
-                    .status(400)
-                    .send(error.invalidRequest(validation.error.details));
+            if (validation.error) {
+                res.status(400);
+                res.send(error.invalidRequest(validation.error.details));
+                return;
+            }
 
             const newAccount = await accountService.createAccount(req.body);
-            res.status(201).send(
-                response.single(
-                    _.pick(newAccount, [
-                        'id',
-                        'account_bank',
-                        'account_name',
-                        'account_number',
-                    ]),
-                ),
-            );
+            return res
+                .status(201)
+                .send(
+                    response.single(
+                        _.pick(newAccount, [
+                            'id',
+                            'account_bank',
+                            'account_name',
+                            'account_number',
+                        ]),
+                    ),
+                );
         } catch (error) {
             logger.error(error);
         }
@@ -42,12 +46,14 @@ export default (app: Router) => {
             );
 
             if (checkAccount !== true)
-                res.status(400).send(
-                    error.generic(
-                        `Account with ${req.params.id} does not exist`,
-                        400,
-                    ),
-                );
+                return res
+                    .status(400)
+                    .send(
+                        error.generic(
+                            `Account with ${req.params.id} does not exist`,
+                            400,
+                        ),
+                    );
 
             await accountService.deleteAccount(req.params.id);
 
@@ -63,13 +69,13 @@ export default (app: Router) => {
                 req.params.id,
             );
             if (userAccounts.length < 1)
-                res.send(
+                return res.send(
                     error.generic(
                         `User with id: ${req.params.id} has no bank account set`,
-                        204,
+                        200,
                     ),
                 );
-            res.send(userAccounts);
+            res.send(response.collection(userAccounts));
         } catch (error) {
             logger.error(error);
         }

@@ -1,8 +1,6 @@
 import events from './events';
-import { userEvent } from '../loaders/dependencyInjector';
+import { userEvent, logger } from '../loaders/dependencyInjector';
 
 userEvent.on(events.user.signUp, function () {
-    // logger.info('Welcome Email started!');
+    logger.info('reached');
 });
-
-export default userEvent;

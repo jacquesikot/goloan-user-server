@@ -10,7 +10,7 @@ describe('accountService.deleteAccount', () => {
         const newAccount = await testHelpers.createTestAccount();
 
         const deletedAccount = await accountService.deleteAccount(
-            newAccount.id,
+            newAccount!.id,
         );
 
         expect(deletedAccount).toBe(true);

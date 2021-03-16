@@ -21,32 +21,31 @@ describe(`${endpoints.account} - GET`, () => {
     test('should return 204 and error message if no user accounts found', async () => {
         const user = await testHelpers.createTestUser();
 
-        const res = await request(server).get(
-            endpoints.account + `/${user.id}`,
-        );
+        const res = await request(server)
+            .get(endpoints.account + `/${user!.id}`)
+            .set('x-master-key', config.master_key);
 
-        // expect(res.status).toBe(204);
         expect(res.body).toMatchObject({
-            message: `User with id: ${user.id} has no bank account set`,
-            code: 204,
+            message: `User with id: ${user!.id} has no bank account set`,
+            code: 200,
         });
     });
 
     test('should return user accounts if correct id is passed', async () => {
         const user = await testHelpers.createTestUser();
 
-        const userAccounts = await testHelpers.createTwoTestAccounts(user.id);
+        const userAccounts = await testHelpers.createTwoTestAccounts(user!.id);
 
-        const res = await request(server).get(
-            endpoints.account + `/${user.id}`,
-        );
+        const res = await request(server)
+            .get(endpoints.account + `/${user!.id}`)
+            .set('x-master-key', config.master_key);
 
-        expect(res.body.length).toBeGreaterThan(1);
-        expect(res.body[0]).toHaveProperty(
+        expect(res.body.data.length).toBeGreaterThan(1);
+        expect(res.body.data[0]).toHaveProperty(
             'account_name',
             userAccounts[0].account_name,
         );
-        expect(res.body[1]).toHaveProperty(
+        expect(res.body.data[1]).toHaveProperty(
             'account_name',
             userAccounts[1].account_name,
         );

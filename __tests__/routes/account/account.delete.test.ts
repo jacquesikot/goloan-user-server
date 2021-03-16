@@ -21,9 +21,10 @@ describe(`${endpoints.account} - DELETE`, () => {
     test('should return 400 if account id does not exist', async () => {
         const fake_account_id = '1';
 
-        const res = await request(server).delete(
-            endpoints.account + `/${fake_account_id}`,
-        );
+        const res = await request(server)
+            .delete(endpoints.account + `/${fake_account_id}`)
+            .set('x-master-key', config.master_key)
+            .send();
 
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({
@@ -35,9 +36,10 @@ describe(`${endpoints.account} - DELETE`, () => {
     test('should return empty array and status 204 if delete is successful', async () => {
         const account = await testHelpers.createTestAccount();
 
-        const res = await request(server).delete(
-            endpoints.account + `/${account.id}`,
-        );
+        const res = await request(server)
+            .delete(endpoints.account + `/${account!.id}`)
+            .set('x-master-key', config.master_key)
+            .send();
 
         expect(res.status).toBe(204);
     });

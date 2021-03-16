@@ -1,4 +1,4 @@
-const collection = (data: any, offset: string, per_page: string) => {
+const collection = (data: any, offset?: string, per_page?: string) => {
     const response = {
         type: 'collection',
         error: null,

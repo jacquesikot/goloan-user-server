@@ -9,9 +9,7 @@ describe('cardService.checkIfCardExists', () => {
     test('should return true if card with given id exists', async () => {
         const card = await testHelpers.createTestCard();
 
-        const checkCard = await cardService.checkIfCardExists(
-            card.id as string,
-        );
+        const checkCard = await cardService.checkIfCardExists(card!.id);
 
         expect(checkCard).toBe(true);
     });

@@ -10,7 +10,7 @@ describe('accountService.checkIfAccountExists', () => {
         const newAccount = await testHelpers.createTestAccount();
 
         const accountCheck = await accountService.checkIfAccountExists(
-            newAccount.id,
+            newAccount!.id,
         );
 
         expect(accountCheck).toBe(true);

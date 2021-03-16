@@ -11,7 +11,7 @@ describe('cardService.createCard', () => {
         const user = await testHelpers.createTestUser();
 
         const cardData: Partial<ICard> = {
-            user_id: user.id as string,
+            user_id: user!.id,
             card_name: 'Jimmy Falon',
             card_number: '1234567890123',
             card_cvv: '234',

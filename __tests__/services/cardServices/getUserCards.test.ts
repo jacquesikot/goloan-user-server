@@ -9,11 +9,9 @@ describe('cardService.getUserCards', () => {
     test('should return an array of user cards', async () => {
         const user = await testHelpers.createTestUser();
 
-        const newCards = await testHelpers.createTwoTestCards(
-            user.id as string,
-        );
+        const newCards = await testHelpers.createTwoTestCards(user!.id);
 
-        const userCards = await cardService.getUserCards(user.id as string);
+        const userCards = await cardService.getUserCards(user!.id);
 
         expect(userCards.length).toBe(2);
         expect(userCards[0]).toHaveProperty(
@@ -29,7 +27,7 @@ describe('cardService.getUserCards', () => {
     test('should return empty array if user doesnt have cards', async () => {
         const user = await testHelpers.createTestUser();
 
-        const userAccounts = await cardService.getUserCards(user.id);
+        const userAccounts = await cardService.getUserCards(user!.id);
 
         expect(userAccounts.length).toBe(0);
     });

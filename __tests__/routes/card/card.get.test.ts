@@ -21,10 +21,12 @@ describe(`${endpoints.card} - GET`, () => {
     test('should return 204 and error message if no user cards found', async () => {
         const user = await testHelpers.createTestUser();
 
-        const res = await request(server).get(endpoints.card + `/${user.id}`);
+        const res = await request(server)
+            .get(endpoints.card + `/${user!.id}`)
+            .set('x-master-key', config.master_key);
 
         expect(res.body).toMatchObject({
-            message: `User with id: ${user.id} has no bank card set`,
+            message: `User with id: ${user!.id} has no bank card set`,
             code: 204,
         });
     });
@@ -32,12 +34,20 @@ describe(`${endpoints.card} - GET`, () => {
     test('should return user cards if correct id is passed', async () => {
         const user = await testHelpers.createTestUser();
 
-        const userCards = await testHelpers.createTwoTestCards(user.id);
+        const userCards = await testHelpers.createTwoTestCards(user!.id);
 
-        const res = await request(server).get(endpoints.card + `/${user.id}`);
+        const res = await request(server)
+            .get(endpoints.card + `/${user!.id}`)
+            .set('x-master-key', config.master_key);
 
-        expect(res.body.length).toBeGreaterThan(1);
-        expect(res.body[0]).toHaveProperty('card_name', userCards[0].card_name);
-        expect(res.body[1]).toHaveProperty('card_name', userCards[1].card_name);
+        expect(res.body.data.length).toBeGreaterThan(1);
+        expect(res.body.data[0]).toHaveProperty(
+            'card_name',
+            userCards[0].card_name,
+        );
+        expect(res.body.data[1]).toHaveProperty(
+            'card_name',
+            userCards[1].card_name,
+        );
     });
 });

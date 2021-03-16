@@ -9,7 +9,7 @@ describe('cardService.deleteCard', () => {
     test('it should delete user card and return true', async () => {
         const newCard = await testHelpers.createTestCard();
 
-        const deletedCard = await cardService.deleteCard(newCard.id as string);
+        const deletedCard = await cardService.deleteCard(newCard!.id);
 
         expect(deletedCard).toBe(true);
     });

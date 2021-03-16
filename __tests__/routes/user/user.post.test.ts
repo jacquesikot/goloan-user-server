@@ -38,7 +38,10 @@ describe(`${endpoints.user} - POST`, () => {
             last_name: 'jimmy',
         };
 
-        const res = await request(server).post(endpoints.user).send(data);
+        const res = await request(server)
+            .post(endpoints.user)
+            .set('x-master-key', config.master_key)
+            .send(data);
 
         expect(res.status).toBe(400);
     });
@@ -46,7 +49,10 @@ describe(`${endpoints.user} - POST`, () => {
     test('should return 400 if user exists', async () => {
         await userService.createUser(data);
 
-        const res = await request(server).post(endpoints.user).send(data);
+        const res = await request(server)
+            .post(endpoints.user)
+            .set('x-master-key', config.master_key)
+            .send(data);
 
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({
@@ -56,7 +62,10 @@ describe(`${endpoints.user} - POST`, () => {
     });
 
     test('should create new user and status 201 and created user', async () => {
-        const res = await request(server).post(endpoints.user).send(data);
+        const res = await request(server)
+            .post(endpoints.user)
+            .set('x-master-key', config.master_key)
+            .send(data);
 
         expect(res.status).toBe(201);
         expect(res.body.data).toHaveProperty('id');

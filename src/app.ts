@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 
+require('dotenv').config();
+
 import express from 'express';
 
 import config from './config';

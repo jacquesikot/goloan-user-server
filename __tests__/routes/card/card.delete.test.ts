@@ -21,9 +21,9 @@ describe(`${endpoints.card} - DELETE`, () => {
     test('should return 400 if account id does not exist', async () => {
         const fake_account_id = '1';
 
-        const res = await request(server).delete(
-            endpoints.card + `/${fake_account_id}`,
-        );
+        const res = await request(server)
+            .delete(endpoints.card + `/${fake_account_id}`)
+            .set('x-master-key', config.master_key);
 
         expect(res.status).toBe(400);
         expect(res.body).toMatchObject({
@@ -35,9 +35,9 @@ describe(`${endpoints.card} - DELETE`, () => {
     test('should return empty array and status 204 if delete is successful', async () => {
         const card = await testHelpers.createTestCard();
 
-        const res = await request(server).delete(
-            endpoints.card + `/${card.id}`,
-        );
+        const res = await request(server)
+            .delete(endpoints.card + `/${card!.id}`)
+            .set('x-master-key', config.master_key);
 
         expect(res.status).toBe(204);
     });

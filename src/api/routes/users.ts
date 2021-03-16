@@ -5,11 +5,12 @@ import endpoints from '../endpoints';
 import { userValidation } from '../../validation';
 import { response, error } from '../../utils';
 import { userService, logger } from '../../loaders/dependencyInjector';
+import { masterAuth } from '../../middlewares';
 
 const route = Router();
 
 export default (app: Router) => {
-    app.use(endpoints.user, route);
+    app.use(endpoints.user, masterAuth, route);
 
     route.post('/', async (req: Request, res: Response) => {
         try {
@@ -48,5 +49,24 @@ export default (app: Router) => {
         } catch (error) {
             logger.error(error);
         }
+
+        route.get('/:id', async (req: Request, res: Response) => {
+            try {
+                const user = await userService.getUserById(req.params.id);
+                if (user.length < 1)
+                    return res
+                        .status(400)
+                        .send(
+                            error.generic(
+                                'User with given id does not exist',
+                                400,
+                            ),
+                        );
+
+                res.send(response.single(user));
+            } catch (error) {
+                logger.error(error);
+            }
+        });
     });
 };

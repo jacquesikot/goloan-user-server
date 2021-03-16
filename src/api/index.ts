@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { home, users, account, card } from './routes';
+import { home, users, account, card, auth } from './routes';
 
 export default () => {
     const app = Router();
@@ -9,6 +9,7 @@ export default () => {
     users(app);
     account(app);
     card(app);
+    auth(app);
 
     return app;
 };

@@ -23,14 +23,17 @@ describe(`${endpoints.card} - POST`, () => {
         const user = await testHelpers.createTestUser();
 
         const cardData: Partial<ICard> = {
-            user_id: user.id,
+            user_id: user!.id,
             card_name: 'jimmy Falon',
             card_cvv: '101',
             card_number: '1234',
             card_expiry: '2512',
         };
 
-        const res = await request(server).post(endpoints.card).send(cardData);
+        const res = await request(server)
+            .post(endpoints.card)
+            .set('x-master-key', config.master_key)
+            .send(cardData);
 
         expect(res.status).toBe(400);
         expect(res.body).toHaveProperty('message');
@@ -40,14 +43,17 @@ describe(`${endpoints.card} - POST`, () => {
         const user = await testHelpers.createTestUser();
 
         const cardData: Partial<ICard> = {
-            user_id: user.id,
+            user_id: user!.id,
             card_name: 'jimmy Falon',
             card_cvv: '101',
             card_number: '1234567899874563',
             card_expiry: '2512',
         };
 
-        const res = await request(server).post(endpoints.card).send(cardData);
+        const res = await request(server)
+            .post(endpoints.card)
+            .set('x-master-key', config.master_key)
+            .send(cardData);
 
         expect(res.status).toBe(201);
         expect(res.body.data).toHaveProperty('card_name', cardData.card_name);

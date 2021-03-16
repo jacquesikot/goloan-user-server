@@ -5,11 +5,12 @@ import endpoints from '../endpoints';
 import { cardValidation } from '../../../src/validation';
 import { cardService, logger } from '../../loaders/dependencyInjector';
 import { error, response } from '../../utils';
+import { masterAuth } from '../../middlewares';
 
 const route = Router();
 
 export default (app: Router) => {
-    app.use(endpoints.card, route);
+    app.use(endpoints.card, masterAuth, route);
 
     route.post('/', async (req: Request, res: Response) => {
         try {
@@ -37,12 +38,14 @@ export default (app: Router) => {
             );
 
             if (checkCard !== true)
-                res.status(400).send(
-                    error.generic(
-                        `Card with ${req.params.id} does not exist`,
-                        400,
-                    ),
-                );
+                return res
+                    .status(400)
+                    .send(
+                        error.generic(
+                            `Card with ${req.params.id} does not exist`,
+                            400,
+                        ),
+                    );
 
             await cardService.deleteCard(req.params.id);
 
@@ -56,13 +59,13 @@ export default (app: Router) => {
         try {
             const userCards = await cardService.getUserCards(req.params.id);
             if (userCards.length < 1)
-                res.send(
+                return res.send(
                     error.generic(
                         `User with id: ${req.params.id} has no bank card set`,
                         204,
                     ),
                 );
-            res.send(userCards);
+            res.send(response.collection(userCards));
         } catch (error) {
             logger.error(error);
         }

@@ -16,6 +16,7 @@ export default async () => {
         return connection;
     } catch (error) {
         logger.error('Postgres loading Error');
+        throw error;
     }
 };
 

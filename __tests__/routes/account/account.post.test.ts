@@ -23,7 +23,7 @@ describe(`${endpoints.account} - POST`, () => {
         const user = await testHelpers.createTestUser();
 
         const accountData: Partial<IAccount> = {
-            user_id: user.id,
+            user_id: user!.id,
             account_name: 'jimmy Falon',
             account_bank: '101',
             account_number: '1234',
@@ -31,6 +31,7 @@ describe(`${endpoints.account} - POST`, () => {
 
         const res = await request(server)
             .post(endpoints.account)
+            .set('x-master-key', config.master_key)
             .send(accountData);
 
         expect(res.status).toBe(400);
@@ -41,7 +42,7 @@ describe(`${endpoints.account} - POST`, () => {
         const user = await testHelpers.createTestUser();
 
         const accountData: Partial<IAccount> = {
-            user_id: user.id,
+            user_id: user!.id,
             account_name: 'jimmy Falon',
             account_bank: '101',
             account_number: '1234567890',
@@ -49,6 +50,7 @@ describe(`${endpoints.account} - POST`, () => {
 
         const res = await request(server)
             .post(endpoints.account)
+            .set('x-master-key', config.master_key)
             .send(accountData);
 
         expect(res.status).toBe(201);

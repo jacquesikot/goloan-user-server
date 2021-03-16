@@ -6,6 +6,7 @@ import {
     userService,
     accountService,
     cardService,
+    authService,
     prisma,
 } from '../loaders/dependencyInjector';
 
@@ -13,7 +14,7 @@ const userData1: IUser = {
     first_name: 'jacques',
     last_name: 'ikot',
     phone_number: '23409059032943',
-    email: 'jimmy@gmail.com',
+    email: 'jimmyjohnson@gmail.com',
     password: '123456',
     pin: '1234',
     gender: 'male',
@@ -21,13 +22,25 @@ const userData1: IUser = {
     user_type: '1',
 };
 
+// {
+//     "first_name": "jacques",
+//     "last_name": "ikot",
+//     "phone_number": "23409059032943",
+//     "email": "jacquesikot@gmail.com",
+//     "password": "123456",
+//     "pin": "1234",
+//     "gender": "male"',
+//     "bvn": "1234567890",
+//     "user_type": "1"
+// }
+
 const createTestUser = async () => {
     const testUser = await userService.createUser(userData1);
     return testUser;
 };
 
 const createTestAccount = async () => {
-    const user = await userService.createUser(userData1);
+    const user = await createTestUser();
 
     const accountData: Partial<IAccount> = {
         user_id: user?.id,
@@ -100,6 +113,19 @@ const createTwoTestCards = async (user_id: string) => {
     return [newCard1, newCard2];
 };
 
+const getAuthToken = async () => {
+    const user = await createTestUser();
+
+    const userObject = await userService.findUserByEmail(user!.email);
+
+    const token = await authService.generateAuthToken(userObject);
+
+    return {
+        token,
+        userObject,
+    };
+};
+
 const startTestServer = async () => {
     const app = express();
     await require('../../../src/loaders').default({ expressApp: app });
@@ -120,6 +146,7 @@ export default {
     createTwoTestAccounts,
     createTestCard,
     createTwoTestCards,
+    getAuthToken,
     cleanDatabase,
     startTestServer,
 };

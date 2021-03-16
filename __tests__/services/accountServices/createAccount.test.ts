@@ -11,7 +11,7 @@ describe('accountService.createAccount', () => {
         const user = await testHelpers.createTestUser();
 
         const accountData: Partial<IAccount> = {
-            user_id: user?.id,
+            user_id: user!.id,
             account_name: 'Jacques Ikot',
             account_bank: '101',
             account_number: '1234567890',
@@ -20,7 +20,7 @@ describe('accountService.createAccount', () => {
 
         const newAccount = await accountService.createAccount(accountData);
 
-        expect(newAccount).toHaveProperty('user_id', user?.id);
+        expect(newAccount).toHaveProperty('user_id', user!.id);
         expect(newAccount).toHaveProperty(
             'account_name',
             accountData.account_name,
