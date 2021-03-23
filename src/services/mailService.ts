@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import config from '../config';
 
-const mailService = (logger: any, mailer: any) => {
+const mailService = (_logger: any) => {
     const testMailchimp = async () => {
         const response = await axios.get(`${config.mailchimp_url}/`, {
             headers: {
@@ -12,25 +12,25 @@ const mailService = (logger: any, mailer: any) => {
         return response.data;
     };
 
-    const welcomeMail = (receiverEmail: string) => {
-        const data = {
-            from: config.email,
-            to: receiverEmail,
-            subject: 'Welcome to Goloan Services',
-            html: 'Hello from goloan',
-        };
+    // const welcomeMail = (receiverEmail: string) => {
+    //     const data = {
+    //         from: config.email,
+    //         to: receiverEmail,
+    //         subject: 'Welcome to Goloan Services',
+    //         html: 'Hello from goloan',
+    //     };
 
-        mailer.messages().send(data, (error: Error, body: any) => {
-            if (error) {
-                logger.error(error);
-            } else {
-                logger.info('Email Sent', body);
-            }
-        });
-    };
+    //     mailer.messages().send(data, (error: Error, body: any) => {
+    //         if (error) {
+    //             logger.error(error);
+    //         } else {
+    //             logger.info('Email Sent', body);
+    //         }
+    //     });
+    // };
 
     return {
-        welcomeMail,
+        // welcomeMail,
         testMailchimp,
     };
 };

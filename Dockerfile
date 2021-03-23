@@ -8,10 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma introspect
-
-RUN npx prisma generate
-
 ENV PORT=3000
 
 ENV NODE_ENV="production"

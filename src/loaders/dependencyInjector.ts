@@ -1,7 +1,7 @@
-import Mailgun from 'mailgun-js';
+// import Mailgun from 'mailgun-js';
 import events from 'events';
 
-import config from '../config';
+// import config from '../config';
 import LoggerInstance from './logger';
 import { PrismaClient } from '@prisma/client';
 import {
@@ -12,12 +12,12 @@ import {
     mailService,
 } from '../services';
 
-const mailgunInstance = new Mailgun({
-    apiKey: config.mailgun_api_key,
-    domain: config.mailgun_domain,
-});
+// const mailgunInstance = new Mailgun({
+//     apiKey: config.mailgun_api_key,
+//     domain: config.mailgun_domain,
+// });
 
-const mailServiceInstance = mailService(LoggerInstance, mailgunInstance);
+const mailServiceInstance = mailService(LoggerInstance);
 const PrismaInstance = new PrismaClient();
 const userEventInstance = new events.EventEmitter();
 const userServiceInstance = userService(
