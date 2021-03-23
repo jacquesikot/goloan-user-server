@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest -i --watchAll --verbose --silent",
     "dev": "nodemon",
-    "start": "pm2 start nodemon -i max",
+    "start": "pm2 start ts-node  --transpile-only ./src/app.ts -i max",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "keywords": [],
