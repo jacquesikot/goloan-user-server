@@ -24,7 +24,6 @@ const userServiceInstance = userService(
     LoggerInstance,
     PrismaInstance,
     userEventInstance,
-    mailServiceInstance,
 );
 const accountServiceInstance = accountService(LoggerInstance, PrismaInstance);
 const cardServiceInstance = cardService(LoggerInstance, PrismaInstance);

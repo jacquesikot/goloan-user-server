@@ -4,12 +4,7 @@ import { IUser } from '../interfaces';
 import { Prisma, users } from '../loaders/prisma';
 //import { events } from '../subscribers';
 
-const userService = (
-    logger: any,
-    prisma: any,
-    userEvent: any,
-    mailService: any,
-) => {
+const userService = (logger: any, prisma: any, mailService: any) => {
     const hashValue = async (value: string): Promise<string | undefined> => {
         try {
             const salt = await bcrypt.genSalt(10);
