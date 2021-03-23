@@ -4685,3 +4685,5 @@
 {"message":"✌️ Morgan enabled","level":"info"}
 {"message":"✌️ Express loaded","level":"info"}
 {"message":"\n        ################################################\n        🛡️  Server listening on port: 3000 🛡️\n        ################################################\n    ","level":"info"}
+{"message":"Postgres loading Error","level":"error"}
+{"message":"Postgres loading Error","level":"error"}
